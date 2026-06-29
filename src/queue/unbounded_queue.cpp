@@ -7,6 +7,8 @@
 
 namespace dispatcher::queue {
 
-// здесь ваш код
+void UnboundedQueue::push(std::function<void()> task) {}
 
-} // namespace dispatcher::queue
+std::optional<std::function<void()>> UnboundedQueue::try_pop() {}
+
+}  // namespace dispatcher::queue
