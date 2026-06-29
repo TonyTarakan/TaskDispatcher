@@ -1,6 +1,7 @@
 #pragma once
 #include "queue/queue.hpp"
 #include <condition_variable>
+#include <queue>
 
 namespace dispatcher::queue {
 
@@ -18,7 +19,6 @@ public:
 private:
     std::queue<std::function<void()>> q_;
     std::mutex mutex_;
-    std::condition_variable not_full_;
 };
 
 }  // namespace dispatcher::queue
