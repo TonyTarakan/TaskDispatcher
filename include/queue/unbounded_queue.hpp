@@ -1,6 +1,6 @@
 #pragma once
 #include "queue/queue.hpp"
-#include <condition_variable>
+#include <mutex>
 #include <queue>
 
 namespace dispatcher::queue {

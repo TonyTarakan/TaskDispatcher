@@ -2,6 +2,13 @@
 
 namespace dispatcher::queue {
 
-// здесь ваш код
+PriorityQueue::PriorityQueue(std::unordered_map<TaskPriority, QueueOptions> config) {}
 
-} // namespace dispatcher::queue
+// здесь ваш код
+void PriorityQueue::push(TaskPriority priority, std::function<void()> task) {}
+
+std::optional<std::function<void()>> PriorityQueue::pop() {}
+
+void PriorityQueue::shutdown() {}
+
+}  // namespace dispatcher::queue
