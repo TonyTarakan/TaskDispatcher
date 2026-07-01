@@ -2,6 +2,8 @@
 
 namespace dispatcher::thread_pool {
 
-// здесь ваш код
+ThreadPool::~ThreadPool() {}
 
-} // namespace dispatcher::thread_pool
+void ThreadPool::run() {}
+
+}  // namespace dispatcher::thread_pool
