@@ -32,6 +32,7 @@ private:
     std::map<TaskPriority, std::unique_ptr<IQueue>> map_;
     std::mutex mutex_;
     std::condition_variable not_empty_;
+    std::atomic<bool> shutdown_{false};
 };
 
 }  // namespace dispatcher::queue

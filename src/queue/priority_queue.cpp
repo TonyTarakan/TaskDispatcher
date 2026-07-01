@@ -3,8 +3,10 @@
 #include "queue/unbounded_queue.hpp"
 #include "types.hpp"
 #include <algorithm>
+#include <functional>
 #include <memory>
 #include <mutex>
+#include <optional>
 
 namespace dispatcher::queue {
 
@@ -27,17 +29,32 @@ void PriorityQueue::push(TaskPriority priority, std::function<void()> task) {
 }
 
 std::optional<std::function<void()>> PriorityQueue::pop() {
-    auto high_task = map_[TaskPriority::High]->try_pop();
-    if (high_task)
-        return high_task;
 
-    auto norm_task = map_[TaskPriority::Normal]->try_pop();
+    std::unique_lock lock{mutex_};
 
-    // TODO:
-    // block on pop until shutdown is called
-    // after that return std::nullopt on empty queue
+    std::optional<std::function<void()>> task{std::nullopt};
+
+    not_empty_.wait(lock, [&task, this]() {
+        task = map_[TaskPriority::High]->try_pop();
+        if (task)
+            return true;
+
+        task = map_[TaskPriority::Normal]->try_pop();
+        if (task)
+            return true;
+
+        if (shutdown_)
+            return true;
+
+        return false;
+    });
+
+    return task;
 }
 
-void PriorityQueue::shutdown() {}
+void PriorityQueue::shutdown() {
+    shutdown_.store(true);
+    not_empty_.notify_all();
+}
 
 }  // namespace dispatcher::queue
