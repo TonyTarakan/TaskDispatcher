@@ -11,11 +11,9 @@ namespace dispatcher {
 
 using QueueCfg = std::unordered_map<TaskPriority, queue::QueueOptions>;
 
-inline const QueueCfg DEFAULT_CFG{{TaskPriority::High, {true, 1000}}, {TaskPriority::Normal, {false}}};
-
 class TaskDispatcher {
 public:
-    explicit TaskDispatcher(size_t thread_count, QueueCfg config = DEFAULT_CFG)
+    explicit TaskDispatcher(size_t thread_count, QueueCfg config = DEFAULT_CFG_)
         : pqueue_(std::make_shared<queue::PriorityQueue>(config)), tpool_(pqueue_, thread_count) {}
     void schedule(TaskPriority priority, std::function<void()> task);
     ~TaskDispatcher() = default;
@@ -23,6 +21,9 @@ public:
 private:
     std::shared_ptr<queue::PriorityQueue> pqueue_;
     thread_pool::ThreadPool tpool_;
+
+private:
+    static const QueueCfg DEFAULT_CFG_;
 };
 
 }  // namespace dispatcher

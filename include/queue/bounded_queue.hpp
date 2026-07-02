@@ -14,7 +14,7 @@ public:
 
     std::optional<std::function<void()>> try_pop() override;
 
-    ~BoundedQueue() override;
+    ~BoundedQueue() override = default;
 
 private:
     std::queue<std::function<void()>> q_;

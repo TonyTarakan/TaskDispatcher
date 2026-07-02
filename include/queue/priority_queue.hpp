@@ -20,13 +20,14 @@ public:
     explicit PriorityQueue(std::unordered_map<TaskPriority, QueueOptions> config);
 
     void push(TaskPriority priority, std::function<void()> task);
+
     // block on pop until shutdown is called
     // after that return std::nullopt on empty queue
     std::optional<std::function<void()>> pop();
 
     void shutdown();
 
-    ~PriorityQueue();
+    ~PriorityQueue() = default;
 
 private:
     std::map<TaskPriority, std::unique_ptr<IQueue>> map_;
