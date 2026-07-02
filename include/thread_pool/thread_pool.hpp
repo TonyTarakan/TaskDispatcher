@@ -1,7 +1,6 @@
 #pragma once
 
 #include "queue/priority_queue.hpp"
-#include <functional>
 #include <thread>
 #include <vector>
 

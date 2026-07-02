@@ -2,6 +2,8 @@
 
 namespace dispatcher {
 
-// здесь ваш код
+void TaskDispatcher::schedule(TaskPriority priority, std::function<void()> task) {
+    pqueue_->push(priority, std::move(task));
+}
 
-} // namespace dispatcher
+}  // namespace dispatcher

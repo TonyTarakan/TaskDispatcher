@@ -2,8 +2,17 @@
 
 namespace dispatcher::thread_pool {
 
-ThreadPool::~ThreadPool() {}
+ThreadPool::~ThreadPool() {
+    queue_->shutdown();
+    for (auto &t : threads_) {
+        t.join();
+    }
+}
 
-void ThreadPool::run() {}
+void ThreadPool::run() {
+    while (auto task = queue_->pop()) {
+        (*task)();
+    }
+}
 
 }  // namespace dispatcher::thread_pool
